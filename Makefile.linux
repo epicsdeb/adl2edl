@@ -1,0 +1,20 @@
+#
+#
+.cc.o:
+	g++ -O0 -g -c -o $@ $^
+
+OBJS=translator.o control.o graphic.o monitor.o fonts.o
+
+all: adl2edl
+
+adl2edl:	$(OBJS)
+	g++ -g \
+	-L/usr/X11R6/lib \
+	-lXm -lXt \
+	-o $@ $^
+
+clean:
+	rm -f *.o
+veryclean:	clean
+	rm -f *~	
+

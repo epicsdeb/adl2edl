@@ -1,0 +1,52 @@
+#############################################################################
+#############################################################################
+
+####### Compiler, tools and options
+
+CC	=	cc
+CXX	=	aCC
+CFLAGS	=	-AA +DAportable -w -O +Onolimit -DNO_DEBUG
+CXXFLAGS=	-AA +DAportable -D_REENTRANT -O +Onolimit -g -DHPUX
+LINK	=	aCC -Wl,-a,archive
+LFLAGS	=	-AA +DAportable -O -s
+LIBS	=	-L/usr/lib/X11R6 -lm -l:libc.sl
+
+
+####### Files
+
+HEADERS =	translator.h
+SOURCES =	makeColorList.cc
+OBJECTS =	makeColorList.o
+TARGET	=	makeColorList
+
+
+####### Implicit rules
+
+.SUFFIXES: .cpp .cxx .cc .C .c
+
+.cpp.o:
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o $@ $<
+
+.cxx.o:
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o $@ $<
+
+.cc.o:
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o $@ $<
+
+.C.o:
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o $@ $<
+
+.c.o:
+	$(CC) -c $(CFLAGS) $(INCPATH) -o $@ $<
+
+####### Build rules
+
+
+all: $(TARGET)
+
+$(TARGET): $(UICDECLS) $(OBJECTS) $(OBJMOC) 
+	$(LINK) $(LFLAGS) -o $(TARGET) $(OBJECTS) $(OBJMOC) $(LIBS)
+
+makeColorList.o: makeColorList.cc
+
+
