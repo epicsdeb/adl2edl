@@ -1,0 +1,10 @@
+adl2edl for Debian
+------------------
+
+Remember that the color map used is controlled with the '-rgb' argument.
+
+Run:
+
+adl2edl -rgb -rename screen.adl screen.edl
+
+ -- Michael Davidsaver <mdavidsaver@bnl.gov>  Fri, 28 Aug 2009 14:51:51 -0400
