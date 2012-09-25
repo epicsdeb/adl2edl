@@ -1,5 +1,5 @@
 Source: adl2edl
-Section: admin
+Section: contrib/admin
 Priority: extra
 Maintainer: Michael Davidsaver <mdavidsaver@bnl.gov>
 Build-Depends: debhelper (>= 7), libmotif-dev, libx11-dev, libxp-dev, libxmu-dev, libxtst-dev
