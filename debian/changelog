@@ -1,3 +1,16 @@
+adl2edl (1.4-2) unstable; urgency=medium
+
+  * Fix related display: replace parent's macros
+  * d/rules, Makefile.linux: add hardening (fortify, relro)
+  * d/rules: add suggested build-arch, build-indep targets
+  * d/rules: replace deprecated 'dh_clean -k'
+  * d/copyright: remove template boilerplate, add copyright, add URL
+  * d/control: add Ralph to Uploaders:
+  * d/control: bump standards to 3.9.5 with no changes
+  * d/control: set Homepage: to adl download page
+
+ -- Ralph Lange <Ralph.Lange@gmx.de>  Fri, 13 Dec 2013 10:13:57 +0100
+
 adl2edl (1.4-1) unstable; urgency=low
 
   * Initial release

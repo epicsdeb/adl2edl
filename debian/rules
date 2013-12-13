@@ -9,12 +9,18 @@
 # Uncomment this to turn on verbose mode.
 #export DH_VERBOSE=1
 
-build: build-stamp
+DEB_USR_CXXFLAGS := -D_FORTIFY_SOURCE=2 -O1
+DEB_USR_LDFLAGS := -Wl,-z,relro
+
+
+build: build-arch build-indep
+build-arch: build-stamp
+build-indep: build-stamp
 
 build-stamp:
 	dh_testdir
 
-	$(MAKE) -f Makefile.linux
+	$(MAKE) -f Makefile.linux CXXFLAGS="$(DEB_USR_CXXFLAGS)" LDFLAGS="$(DEB_USR_LDFLAGS)"
 
 	touch $@
 
@@ -33,7 +39,7 @@ bindir=$(CURDIR)/debian/adl2edl/usr/bin
 install: build
 	dh_testdir
 	dh_testroot
-	dh_clean -k 
+	dh_prep
 	dh_installdirs
 
 	install -d $(bindir)

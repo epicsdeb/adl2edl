@@ -2,9 +2,10 @@ Source: adl2edl
 Section: contrib/admin
 Priority: extra
 Maintainer: Michael Davidsaver <mdavidsaver@bnl.gov>
+Uploaders: Ralph Lange <Ralph.Lange@gmx.de>
 Build-Depends: debhelper (>= 7), libmotif-dev, libx11-dev, libxp-dev, libxmu-dev, libxtst-dev
-Standards-Version: 3.8.0
-Homepage: http://ics-web.sns.ornl.gov/edm/
+Standards-Version: 3.9.5
+Homepage: http://ics-web.sns.ornl.gov/adl2edl/log/show.php
 
 Package: adl2edl
 Architecture: any

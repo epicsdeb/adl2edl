@@ -1,18 +1,15 @@
 This package was debianized by Michael Davidsaver <mdavidsaver@bnl.gov> on
 Fri, 28 Aug 2009 14:51:51 -0400.
 
-It was downloaded from <url://example.com>
+It was downloaded from <http://ics-web.sns.ornl.gov/adl2edl/log/show.php>
 
 Upstream Author(s):
-
     Joan Sage (TJNAF) sage@jlab.org
 
 Copyright:
-
-    
+    Copyright (C) 2004 Jefferson Science Associates, LLC
 
 License:
-
     Redistribution and use in source and binary forms, with or without
     modification, are permitted under the terms of the BSD License.
 
@@ -34,7 +31,3 @@ found in `/usr/share/common-licenses/BSD'.
 
 The Debian packaging is (C) 2009, Michael Davidsaver <mdavidsaver@bnl.gov> and
 is licensed under the GPL, see `/usr/share/common-licenses/GPL'.
-
-
-# Please also look if there are files or directories which have a
-# different copyright/license attached and list them here.
