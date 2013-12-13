@@ -885,6 +885,17 @@ int relatedclass::parse(ifstream &inf, ostream &outf, ostream &outd)
 	}
 	if (once) outf << "}" << endl;
 
+    // Simulate medm behaviour by replacing the parent macros
+    once = 0;
+    for (int i=0; i<rel_ctr; i++) {
+        if(!once) {
+            outf << "replaceSymbols {" << endl;
+            once++;
+        }
+        outf << "  " << i << " 1" << endl;
+    }
+    if (once) outf << "}" << endl;
+
 	once = 0;
 	for (int i=0; i<rel_ctr; i++) {
 		if(strstr(rellist[i].policy.c_str(), "replace")){
