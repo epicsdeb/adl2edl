@@ -1,7 +1,6 @@
 #include "translator.h"
 #include "fonts.h"
 
-
 using std::endl;
 using std::cout;
 using std::ifstream;
@@ -669,7 +668,7 @@ int translator::parseComposite(ifstream &inf, ostream &outf, ostream &outd, ostr
 	//outd << "In Composite " << translator::line_ctr << endl;
     do {
         getline(inf,line);
-		//outd << "L " << line << endl;
+        //outd << "L " << line << endl;
         translator::line_ctr++;
         pos = line.find(bopen,0);
         if(pos != -1)  open++; 
@@ -678,9 +677,9 @@ int translator::parseComposite(ifstream &inf, ostream &outf, ostream &outd, ostr
 
         eq_pos = line.find(eq,0);
         if(eq_pos != -1){
-			line.replace(eq_pos,1,space);
-			snum = sscanf(line.c_str(), "%s %s", s1,s2);
-			if     (!strcmp(s1,"x"))  x = atoi(s2); 
+            sscanf(line.substr(0, eq_pos).c_str(), "%s", s1);
+            sscanf(line.substr(eq_pos+1).c_str(), "%s", s2);
+            if     (!strcmp(s1,"x"))  x = atoi(s2);
 			else if(!strcmp(s1,"y"))  y = atoi(s2); 
 			else if(!strcmp(s1,"width"))  wid = atoi(s2); 
 			else if(!strcmp(s1,"height"))  hgt = atoi(s2); 
@@ -709,9 +708,9 @@ int translator::parseComposite(ifstream &inf, ostream &outf, ostream &outd, ostr
 				title = "# (Embedded Window)";
 				string slash("/");
 				int slash_pos;
-				slash_pos = line.rfind(slash, line.length());
-				if(slash_pos != line.length()){
-					file.append(line, slash_pos+1, line.length());
+				slash_pos = line.rfind(slash);
+				if(slash_pos != std::string::npos){
+					file.append(line, slash_pos+1, std::string::npos);
 				} else {
 					file = s2;
 				}
@@ -801,8 +800,8 @@ int translator::parseComposite(ifstream &inf, ostream &outf, ostream &outd, ostr
 			outf << "botShadowColor index 14" << endl;
 		}
 		outf << "noScroll" << endl;
-		outf << "displaySource file" << endl;
-		outf << "file " << file  << endl;
+		outf << "displaySource \"file\"" << endl;
+		outf << "file \"" << file << "\"" << endl;
 		outf << "sizeOfs 5" << endl;
 		outf << "numDsps 0" << endl;
 		outf << "endObjectProperties" << endl;
