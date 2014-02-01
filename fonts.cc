@@ -316,7 +316,7 @@ char *tk, spec[127+1], rest[127+1], foundry[63+1], family[63+1], weight[31+1],
 
   tk = strtok( spec, "-" );
   if ( !tk ) goto err_return;
-  strncpy( weight, tk, 63 );
+  strncpy( weight, tk, 31 );
 
   tk = strtok( NULL, "\n" );
   if ( !tk ) goto err_return;
@@ -338,7 +338,7 @@ char *tk, spec[127+1], rest[127+1], foundry[63+1], family[63+1], weight[31+1],
 
   tk = strtok( spec, "-" );
   if ( !tk ) goto err_return;
-  strncpy( slant, tk, 63 );
+  strncpy( slant, tk, 31 );
 
   tk = strtok( NULL, "\n" );
   if ( !tk ) goto err_return;
@@ -361,7 +361,7 @@ char *tk, spec[127+1], rest[127+1], foundry[63+1], family[63+1], weight[31+1],
 
   tk = strtok( spec, "-" );
   if ( !tk ) goto err_return;
-  strncpy( ftype, tk, 63 );
+  strncpy( ftype, tk, 31 );
 
   tk = strtok( NULL, "-" );
   if ( !tk ) goto err_return;
