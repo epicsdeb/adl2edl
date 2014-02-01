@@ -1,3 +1,11 @@
+adl2edl (1.4-3) unstable; urgency=medium
+
+  * Fix related display: input line scanning, slash search logic
+  * Fix compiler warnings: possible strncpy buffer overflow
+  * d/copyright: fix lintian warnings
+
+ -- Ralph Lange <Ralph.Lange@gmx.de>  Sat, 01 Feb 2014 15:55:58 +0100
+
 adl2edl (1.4-2) unstable; urgency=medium
 
   * Fix related display: replace parent's macros
