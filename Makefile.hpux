@@ -7,6 +7,8 @@ LINK	=	aCC -Wl,-a,archive
 LFLAGS	=	-AA -O -s
 LIBS	=	-L/usr/lib/X11R6 -lm -lXm -lXp -lXt -lXext -lX11 -lSM -lICE -l:libc.sl
 
+# Uncomment to enable JLAB-specific code
+# CXXFLAGS += -DJLAB
 
 ####### Files
 

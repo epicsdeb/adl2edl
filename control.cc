@@ -2,6 +2,12 @@
 #include "translator.h"
 #include "fonts.h"
 
+#ifdef JLAB
+#define JLAB true
+#else
+#define JLAB false
+#endif
+
 using std::endl;
 using std::cout;
 using std::vector;
@@ -581,7 +587,7 @@ string relatedclass::look_for_file(ostream &outd, string tname)
 // process the "related display" object
 int relatedclass::parse(ifstream &inf, ostream &outf, ostream &outd)
 {
-	bool jlab = 1;
+	bool jlab = JLAB;
 
 	int adl_pos;
 	string echar(".edl");

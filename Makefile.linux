@@ -1,5 +1,9 @@
 #
 #
+
+# Uncomment to enable JLAB-specific code
+# CXXFLAGS += -DJLAB
+
 .cc.o:
 	g++ -O0 -g -c $(CXXFLAGS) -o $@ $^
 

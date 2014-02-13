@@ -1,3 +1,9 @@
+adl2edl (1.4-4) unstable; urgency=medium
+
+  * Fix related display: set default to not use JLAB specific code
+
+ -- Ralph Lange <Ralph.Lange@gmx.de>  Thu, 13 Feb 2014 15:40:12 +0100
+
 adl2edl (1.4-3) unstable; urgency=medium
 
   * Fix related display: input line scanning, slash search logic
