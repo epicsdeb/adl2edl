@@ -1,3 +1,9 @@
+adl2edl (1.4-5) unstable; urgency=medium
+
+  * Fix helper-templates-in-copyright issue detected by lintian
+
+ -- Ralph Lange <Ralph.Lange@gmx.de>  Wed, 02 Apr 2014 11:03:20 +0200
+
 adl2edl (1.4-4) unstable; urgency=medium
 
   * Fix related display: set default to not use JLAB specific code
