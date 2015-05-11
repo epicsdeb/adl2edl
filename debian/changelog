@@ -1,3 +1,10 @@
+adl2edl (1.4-6) unstable; urgency=low
+
+  * Fix compiler and linking problems with debian 8
+  * Replace Makefile with CMakeLists.txt
+
+ -- Michael Davidsaver <mdavidsaver@bnl.gov>  Mon, 11 May 2015 18:41:09 -0400
+
 adl2edl (1.4-5) unstable; urgency=medium
 
   * Fix helper-templates-in-copyright issue detected by lintian

@@ -10,3 +10,7 @@ export DH_VERBOSE=1
 
 %:
 	dh "$@"
+
+override_dh_auto_clean:
+	rm -f Makefile*
+	dh_auto_clean
