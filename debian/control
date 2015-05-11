@@ -3,7 +3,8 @@ Section: contrib/admin
 Priority: extra
 Maintainer: Michael Davidsaver <mdavidsaver@bnl.gov>
 Uploaders: Ralph Lange <Ralph.Lange@gmx.de>
-Build-Depends: debhelper (>= 7), libmotif-dev, libx11-dev, libxp-dev, libxmu-dev, libxtst-dev
+Build-Depends: debhelper (>= 7.0.50~), cmake,
+               libmotif-dev, libx11-dev, libxp-dev, libxmu-dev, libxtst-dev
 Standards-Version: 3.9.5
 Homepage: http://ics-web.sns.ornl.gov/adl2edl/log/show.php
 
