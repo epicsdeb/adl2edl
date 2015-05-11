@@ -1,3 +1,4 @@
+#include <stdio.h>
 #include "fonts.h"
 
 static fontNameListPtr head, tail;
@@ -25,7 +26,7 @@ fontNameListPtr cur;
 
 static char *Strncat(
   char *dest,
-  char *src,
+  const char *src,
   int max ) {
 
   // max must be >= 0 and no more than stringsize - 1
@@ -1399,7 +1400,7 @@ int empty = 1;
 int fontInfoClass::initFromFile (
   XtAppContext app,
   Display *d,
-  char *fileName )
+  const char *fileName )
 {
 
 // Read font specs from given file, query server, and populate data structure.

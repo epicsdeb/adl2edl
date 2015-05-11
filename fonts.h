@@ -176,7 +176,7 @@ int initFromFileVer3 (
 int initFromFile (
   XtAppContext app,
   Display *d,
-  char *fileName );
+  const char *fileName );
 
 XFontStruct *getXFontStruct (
   char *name );
