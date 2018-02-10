@@ -73,7 +73,7 @@ int main(int argc, char **argv)
 	//cout << "used " << used << endl;
 	// If user has named only one file, use the inputfilename + ".db"
 	// for diagnostic output.
-	if(numFiles == 1  ||  urgb == 1) {
+	if(numFiles == 1) {
 		strncpy(outfile, argv[used], 196);
 		strcat(outfile, ".db");
 		//cout << "f1: " << argv[used] << endl;
