@@ -312,7 +312,7 @@ int xyclass::parse(ifstream &inf, ostream &outf, ostream &outd)
     if ( fptr ) {
       outf << "font \"" << fptr << "\"" << endl;
     } else {
-      outf << "font \"" << "helvetica-medium-r-10.0" << "\"" << endl;
+      outf << "font \"" << "helvetica-bold-r-12.0" << "\"" << endl;
     }
 
     outf << "# Operating Modes" << endl;
@@ -752,7 +752,7 @@ int barclass::parse(ifstream &inf, ostream &outf, ostream &outd)
 	if ( fptr ) {
 		outf << "font \"" << fptr << "\"" << endl;
 	} else {
-		outf << "font \"" << "helvetica-medium-r-8.0" << "\"" << endl;
+		outf << "font \"" << "helvetica-bold-r-10.0" << "\"" << endl;
 	}
 
 	outf << "labelTicks 1" << endl;
@@ -885,7 +885,7 @@ int meterclass::parse(ifstream &inf, ostream &outf, ostream &outd)
 	if ( fptr ) {
 		outf << "scaleFontTag \"" << fptr << "\"" << endl;
 	} else {
-		outf << "scaleFontTag \"" << "helvetica-medium-r-8.0" << "\"" << endl;
+		outf << "scaleFontTag \"" << "helvetica-bold-r-10.0" << "\"" << endl;
 	}
 
 	outf << "endObjectProperties" << endl;
@@ -987,24 +987,35 @@ int textmonclass::parse(ifstream &inf, ostream &outf, ostream &outd, int edit)
 		if ( fptr ) {
 			outf << "font \"" << fptr << "\"" << endl;
 		} else {
-			outf << "font \"" << "helvetica-medium-r-8.0" << "\"" << endl;
+			outf << "font \"" << "helvetica-bold-r-12.0" << "\"" << endl;
 		}
 	} else {
 		fptr = fi.bestFittingFont( (int) (hgt-.3*hgt) );
 		if ( fptr ) {
 			outf << "font \"" << fptr << "\"" << endl;
 		} else {
-			outf << "font \"" << "helvetica-medium-r-8.0" << "\"" << endl;
+			outf << "font \"" << "helvetica-bold-r-12.0" << "\"" << endl;
 		}
 	}
 	if(align.length())
         outf << "fontAlign \"" << align << "\"" << endl;
+	else
+        outf << "fontAlign \"center\"" << endl;
 
 	//if(edit) {
 		outf << "smartRefresh" << endl;
 		outf << "fastUpdate" << endl;
 	//}
 
+	if(!urgb) {
+		if(edit) {
+			clr  = 25;
+			bclr = 5;
+		} else {
+			clr  = 15;
+			bclr = 12;
+		}
+	}
 	if(urgb) outf << "fgColor rgb " << cmap.getRGB(clr) << endl;
     else outf << "fgColor index " << clr << endl;
     if(colormode == 1) {   

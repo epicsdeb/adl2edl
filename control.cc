@@ -110,7 +110,7 @@ int buttonclass::parse(ifstream &inf, ostream &outf, ostream &outd)
     if ( fptr ) {
     	outf << "font \"" << fptr << "\"" << endl;
     } else {
-    	outf << "font \"" << "helvetica-medium-r-10.0" << "\"" << endl;
+    	outf << "font \"" << "helvetica-bold-r-12.0" << "\"" << endl;
     }
 
     //outf << "objType \"controls\"" << endl;
@@ -226,7 +226,7 @@ int valclass::parse(ifstream &inf, ostream &outf, ostream &outd)
 	if ( fptr ) {
 		outf << "font \"" << fptr << "\"" << endl;
 	} else {
-		outf << "font \"" << "helvetica-medium-r-10.0" << "\"" << endl;
+		outf << "font \"" << "helvetica-bold-r-12.0" << "\"" << endl;
 	}
 
 	if(direction)
@@ -358,7 +358,7 @@ int mbuttonclass::parse(ifstream &inf, ostream &outf, ostream &outd)
 	if ( fptr ) {
 		outf << "font \"" << fptr << "\"" << endl;
 	} else {
-		outf << "font \"" << "helvetica-medium-r-10.0" << "\"" << endl;
+		outf << "font \"" << "helvetica-bold-r-12.0" << "\"" << endl;
 	}
     outf << "endObjectProperties" << endl;
 	return 1;
@@ -465,7 +465,7 @@ int shellclass::parse(ifstream &inf, ostream &outf, ostream &outd)
 	if ( fptr ) {
 		outf << "font \"" << fptr << "\"" << endl;
 	} else {
-		outf << "font \"" << "helvetica-medium-r-10.0" << "\"" << endl;
+		outf << "font \"" << "helvetica-bold-r-12.0" << "\"" << endl;
 	}
 
 	outf << "buttonLabel \"!\"" << endl;
@@ -799,7 +799,7 @@ int relatedclass::parse(ifstream &inf, ostream &outf, ostream &outd)
 	if ( fptr ) {
 		outf << "font \"" << fptr << "\"" << endl;
 	} else {
-		outf << "font \"" << "helvetica-medium-r-10.0" << "\"" << endl;
+		outf << "font \"" << "helvetica-bold-r-12.0" << "\"" << endl;
 	}
 
 	// A minus sign in front of the title means don't show the lil boxes.
@@ -997,7 +997,7 @@ int menuclass::parse(ifstream &inf, ostream &outf, ostream &outd)
     if ( fptr ) {
       outf << "font \"" << fptr << "\"" << endl;
     } else {
-      outf << "font \"" << "helvetica-medium-r-10.0" << "\"" << endl;
+      outf << "font \"" << "helvetica-bold-r-12.0" << "\"" << endl;
     }
 
     outf << "endObjectProperties" << endl;
