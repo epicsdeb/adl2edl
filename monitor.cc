@@ -935,7 +935,8 @@ int textmonclass::parse(ifstream &inf, ostream &outf, ostream &outd, int edit)
 			else if(!strcmp(s1,"align")) {
 				if(strstr(line.c_str(), "horiz")!= 0x0) {
 					if(strstr(line.c_str(), "center")!= 0x0) align = "center";
-						else if(strstr(line.c_str(), "right")!= 0x0) align = "right";
+					else if(strstr(line.c_str(), "right")!= 0x0) align = "right";
+					else if(strstr(line.c_str(), "left")!= 0x0) align = "left";
 					}
 				}
             else if(!strcmp(s1,"chan") || !strcmp(s1,"ctrl") || !strcmp(s1,"rdbk")) { 
@@ -967,8 +968,14 @@ int textmonclass::parse(ifstream &inf, ostream &outf, ostream &outd, int edit)
     } while (open > 0);
 
 	outf << endl;
-	outf << "# (Text Control)" << endl;
-	outf << "object activeXTextDspClass" << endl;
+	if ( edit ) {
+		outf << "# (Text Control)" << endl;
+		outf << "object activeXTextDspClass" << endl;
+	}
+	else {
+		outf << "# (Text Monitor)" << endl;
+		outf << "object activeXTextDspClass:noedit" << endl;
+	}
 	outf << "beginObjectProperties" << endl;
 
     outf << "major " << XTDC_MAJOR_VERSION  << endl;
