@@ -1024,7 +1024,7 @@ int textmonclass::parse(ifstream &inf, ostream &outf, ostream &outd, int edit)
 	if(urgb) outf << "bgColor rgb " << cmap.getRGB(bclr) << endl;
     else outf << "bgColor index " << bclr << endl;
 	if(edit) outf << "editable" << endl;
-	outf << "autoHeight" << endl;
+	// outf << "autoHeight" << endl;
 	if(format == "\"truncated\""){
     	outf << "format \"decimal\"" << endl;
 		outf << "precision 0" << endl;
@@ -1040,10 +1040,10 @@ int textmonclass::parse(ifstream &inf, ostream &outf, ostream &outd, int edit)
 		if(prec.length()) outf << "precision " << prec << endl;
 	}
 	if(edit) outf << "motifWidget" << endl;
-	//outf << "limitsFromDb" << endl;
+	outf << "limitsFromDb" << endl;
 	if(urgb) outf << "nullColor rgb " << cmap.getRGB(32) << endl;
 	else outf << "nullColor index 32" << endl;
-	outf << "useHexPrefix" << endl;
+	// outf << "useHexPrefix" << endl;
 	outf << "objType \"controls\"" << endl;
 	outf << "newPos" << endl;
 	outf << "endObjectProperties" << endl;
