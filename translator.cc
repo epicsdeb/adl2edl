@@ -803,7 +803,10 @@ int translator::parseComposite(ifstream &inf, ostream &outf, ostream &outd, ostr
 		outf << "displaySource \"file\"" << endl;
 		outf << "file \"" << file << "\"" << endl;
 		outf << "sizeOfs 5" << endl;
-		outf << "numDsps 0" << endl;
+		outf << "numDsps 1" << endl;
+		outf << "displayFileName {" << endl;
+		outf << "  " << 0 << " \"" << file << "\"" << endl;
+		outf << "}" << endl;
 		outf << "endObjectProperties" << endl;
 	} else {
 		//outd << "CASE 3 embed win with vis param" << endl;
@@ -846,7 +849,10 @@ int translator::parseComposite(ifstream &inf, ostream &outf, ostream &outd, ostr
 		outf << "displaySource \"file\"" << endl;
 		outf << "file \"" << file  << "\"" << endl;
 		outf << "sizeOfs 5" << endl;
-		outf << "numDsps 0" << endl;
+		outf << "numDsps 1" << endl;
+		outf << "displayFileName {" << endl;
+		outf << "  " << 0 << " \"" << file << "\"" << endl;
+		outf << "}" << endl;
 		outf << "endObjectProperties" << endl;
 
 		outf << endl;

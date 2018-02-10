@@ -661,7 +661,11 @@ int relatedclass::parse(ifstream &inf, ostream &outf, ostream &outd)
 				outd << "START " << tname << endl;
 				saved_name = tname;
 
-				if(tname.length() == 0) { // medm ignores blank names. edm does not.
+				if(tname.length() != 0) { // medm ignores blank names. edm does not.
+					adl_pos = tname.find(adl,0);
+					if(adl_pos != -1){
+						tname.replace(adl_pos,4,echar);
+					}
 					rel->name = tname;
 				}
 
