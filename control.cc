@@ -731,13 +731,14 @@ int relatedclass::parse(ifstream &inf, ostream &outf, ostream &outd)
 					}
 				}
 
-				outd << "RN " << rel->name << endl;
+				// outd << "RelatedDisplay name " << rel->name << endl;
 
 			} // end if name
 
 
 			else if( (strstr(s1, "args")!= 0x0)) {
 				rel->args = string(line, eq_pos, std::string::npos);
+				// outd << "RelatedDisplay args " << rel->args << endl;
 				// get rid of leading spaces . See below.
 				while((tpos = rel->args.find(space,0)) != -1)
    	               	rel->args.replace(tpos,1,nil);
@@ -749,7 +750,7 @@ int relatedclass::parse(ifstream &inf, ostream &outf, ostream &outd)
 			if( (strstr(line.c_str(), "display")!= 0x0)) {
 				rel = new relnode();
 				mode = 1;
-				//cout << "Creating a node" << endl;
+				// outd << "RelatedDisplay new node" << endl;
 			} else if(( mode == 1) && (strstr(line.c_str(), bclose.c_str())!= 0x0)) {
 				mode = 0;
 				// Some programatically created screens leave rel.name and the rest
