@@ -59,14 +59,14 @@
 // text update(adl) text monitor(edl)
 //x_text_dsp_obj.h text monitor
 #define XTDC_MAJOR_VERSION 4
-#define XTDC_MINOR_VERSION 0
+#define XTDC_MINOR_VERSION 7
 #define XTDC_RELEASE 0
 
 //x_text_obj.h text
 // for static text(edl)
 #define AXTC_MAJOR_VERSION 4
-#define AXTC_MINOR_VERSION 0
-#define AXTC_RELEASE 0
+#define AXTC_MINOR_VERSION 1
+#define AXTC_RELEASE 1
 
 //line_obj.h polyline
 #define ALC_MAJOR_VERSION 4
@@ -96,7 +96,17 @@
 //act_win.h header
 #define AWC_MAJOR_VERSION 4
 #define AWC_MINOR_VERSION 0
-#define AWC_RELEASE 0
+#define AWC_RELEASE 1
+
+//group.h text
+#define AGC_MAJOR_VERSION 4
+#define AGC_MINOR_VERSION 0
+#define AGC_RELEASE 0
+
+//pip.h text
+#define PIP_MAJOR_VERSION 4
+#define PIP_MINOR_VERSION 1
+#define PIP_RELEASE 0
 
 struct battr {
 		int clr;

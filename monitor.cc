@@ -913,6 +913,11 @@ int textmonclass::parse(ifstream &inf, ostream &outf, ostream &outd, int edit)
 	string align = "";
 	string prec;
 
+	if ( ! edit ) {
+		// TextMonitor's should default to alarm sensitive if not specified
+		colormode = 1;
+	}
+
 	//outd << "In Textmoner & Textupdte " << translator::line_ctr << endl;
     do {
         getline(inf,line);
@@ -988,6 +993,17 @@ int textmonclass::parse(ifstream &inf, ostream &outf, ostream &outd, int edit)
     outf << "w " << wid<< endl;
     outf << "h " << hgt << endl;
     outf << "controlPv " << chan << endl;
+	if(format == "\"truncated\""){
+    	outf << "format \"decimal\"" << endl;
+	}
+	else if(format == "\"hexadecimal\""){
+    	outf << "format \"hex\"" << endl;
+	}
+	else if(format == "\"compact\""){
+    	outf << "format \"decimal\"" << endl;
+	} else {
+    	outf << "format \"" << format << "\"" << endl;
+	}
 
 	if(!edit) {
 		fptr = fi.bestFittingFont( hgt );
@@ -1009,11 +1025,6 @@ int textmonclass::parse(ifstream &inf, ostream &outf, ostream &outd, int edit)
 	else
         outf << "fontAlign \"center\"" << endl;
 
-	//if(edit) {
-		outf << "smartRefresh" << endl;
-		outf << "fastUpdate" << endl;
-	//}
-
 	if(!urgb) {
 		if(edit) {
 			clr  = 25;
@@ -1032,27 +1043,24 @@ int textmonclass::parse(ifstream &inf, ostream &outf, ostream &outd, int edit)
     else outf << "bgColor index " << bclr << endl;
 	if(edit) outf << "editable" << endl;
 	// outf << "autoHeight" << endl;
+	if(edit) outf << "motifWidget" << endl;
 	if(format == "\"truncated\""){
-    	outf << "format \"decimal\"" << endl;
 		outf << "precision 0" << endl;
 	}
-	else if(format == "\"hexadecimal\""){
-    	outf << "format \"hex\"" << endl;
-	}
 	else if(format == "\"compact\""){
-    	outf << "format \"decimal\"" << endl;
 		outf << "precision 2" << endl;
+	} else if(format != "\"hexadecimal\"" && prec.length()) {
+		outf << "precision " << prec << endl;
 	} else {
-    	outf << "format " << format << endl;
-		if(prec.length()) outf << "precision " << prec << endl;
+		outf << "limitsFromDb" << endl;
 	}
-	if(edit) outf << "motifWidget" << endl;
-	outf << "limitsFromDb" << endl;
 	if(urgb) outf << "nullColor rgb " << cmap.getRGB(32) << endl;
 	else outf << "nullColor index 32" << endl;
 	// outf << "useHexPrefix" << endl;
-	outf << "objType \"controls\"" << endl;
+	outf << "smartRefresh" << endl;
+	outf << "fastUpdate" << endl;
 	outf << "newPos" << endl;
+	outf << "objType \"controls\"" << endl;
 	outf << "endObjectProperties" << endl;
     return 1;
 }

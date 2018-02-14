@@ -803,20 +803,22 @@ int textclass::parse(ifstream &inf, ostream &outf, ostream &outd)
 
 	if(urgb) outf << "fgColor rgb " << cmap.getRGB(clr) << endl;
 	else outf << "fgColor index " << clr << endl;
-	//outf << "bgColor index " << 0 << endl;	//Not available in medm
+    if(colormode == 1) {        		
+		outf << "fgAlarm" << endl;
+	}
+	outf << "bgColor index " << 3 << endl;	//Not available in medm
 	outf << "useDisplayBg" << endl;
 
 	outf << "value {" << endl;
 	if ( textstr == " " ) 						// Handle empty text string
-		outf << " \"\"" << endl;
+		outf << "  \"\"" << endl;
 	 else 
-		outf << textstr << endl;
+		outf << " " << textstr << endl;
 	outf << "}" << endl;
 
     if(colormode == 1) {        		
         outf << "alarmPv " << chan << endl;
         if(vis == 1)  outf << "visInvert" <<  endl;
-		outf << "fgAlarm" << endl;
 	}
     if(vis != 0) {       			
         string tstr = "visPv \"CALC\\\\\\{(";

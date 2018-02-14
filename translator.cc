@@ -15,8 +15,8 @@ struct dattr translator::da;
 
 bool urgb;
 bool retitle; // already used 'rename'
-int default_clr;
-int default_bclr;
+int default_clr	= 14;
+int default_bclr = 3;
 
 fontInfoClass fi;
 static char *fptr;
@@ -751,39 +751,39 @@ int translator::parseComposite(ifstream &inf, ostream &outf, ostream &outd, ostr
 		outf << "# (Group)" << endl;
 		outf << "object activeGroupClass" << endl;
 		outf << "beginObjectProperties" << endl;
-		outf << "major " << AXTC_MAJOR_VERSION << endl;
-		outf << "minor " << AXTC_MINOR_VERSION << endl;
-		outf << "release " << AXTC_RELEASE << endl;
+		outf << "major " << AGC_MAJOR_VERSION << endl;
+		outf << "minor " << AGC_MINOR_VERSION << endl;
+		outf << "release " << AGC_RELEASE << endl;
 		outf << "x " << x << endl;
 		outf << "y " << y << endl;
 		outf << "w " << wid<< endl;
 		outf << "h " << hgt << endl;
 		outf << endl;
 		outf << "beginGroup" << endl;
-		outf << endl;
+		// outf << endl;
 
 		outt << "# (Group)" << endl;
 		outt << "object activeGroupClass" << endl;
 		outt << "beginObjectProperties" << endl;
-		outt << "major " << AXTC_MAJOR_VERSION << endl;
-		outt << "minor " << AXTC_MINOR_VERSION << endl;
-		outt << "release " << AXTC_RELEASE << endl;
+		outt << "major " << AGC_MAJOR_VERSION << endl;
+		outt << "minor " << AGC_MINOR_VERSION << endl;
+		outt << "release " << AGC_RELEASE << endl;
 		outt << "x " << x << endl;
 		outt << "y " << y << endl;
 		outt << "w " << wid<< endl;
 		outt << "h " << hgt << endl;
 		outt << endl;
 		outt << "beginGroup" << endl;
-		outt << endl;
+		// outt << endl;
 
 	} else if (!vis) {
 		//outd << "CASE 2 embed win" << endl;
 		outf << "# (Embedded Window)" << endl;
 		outf << "object activePipClass" << endl;
 		outf << "beginObjectProperties" << endl;
-		outf << "major " << AXTC_MAJOR_VERSION << endl;
-		outf << "minor " << AXTC_MINOR_VERSION << endl;
-		outf << "release " << AXTC_RELEASE << endl;
+		outf << "major " << AGC_MAJOR_VERSION << endl;
+		outf << "minor " << AGC_MINOR_VERSION << endl;
+		outf << "release " << AGC_RELEASE << endl;
 		outf << "x " << x << endl;
 		outf << "y " << y << endl;
 		outf << "w " << wid<< endl;
@@ -799,7 +799,6 @@ int translator::parseComposite(ifstream &inf, ostream &outf, ostream &outd, ostr
 			outf << "topShadowColor index 0" << endl;
 			outf << "botShadowColor index 14" << endl;
 		}
-		outf << "noScroll" << endl;
 		outf << "displaySource \"file\"" << endl;
 		outf << "file \"" << file << "\"" << endl;
 		outf << "sizeOfs 5" << endl;
@@ -807,15 +806,16 @@ int translator::parseComposite(ifstream &inf, ostream &outf, ostream &outd, ostr
 		outf << "displayFileName {" << endl;
 		outf << "  " << 0 << " \"" << file << "\"" << endl;
 		outf << "}" << endl;
+		outf << "noScroll" << endl;
 		outf << "endObjectProperties" << endl;
 	} else {
 		//outd << "CASE 3 embed win with vis param" << endl;
 		outf << "# (Group)" << endl;
 		outf << "object activeGroupClass" << endl;
 		outf << "beginObjectProperties" << endl;
-		outf << "major " << AXTC_MAJOR_VERSION << endl;
-		outf << "minor " << AXTC_MINOR_VERSION << endl;
-		outf << "release " << AXTC_RELEASE << endl;
+		outf << "major " << AGC_MAJOR_VERSION << endl;
+		outf << "minor " << AGC_MINOR_VERSION << endl;
+		outf << "release " << AGC_RELEASE << endl;
 		outf << "x " << x << endl;
 		outf << "y " << y << endl;
 		outf << "w " << wid<< endl;
@@ -827,9 +827,9 @@ int translator::parseComposite(ifstream &inf, ostream &outf, ostream &outd, ostr
 		outf << "# (Embedded Window)" << endl;
 		outf << "object activePipClass" << endl;
 		outf << "beginObjectProperties" << endl;
-		outf << "major " << AXTC_MAJOR_VERSION << endl;
-		outf << "minor " << AXTC_MINOR_VERSION << endl;
-		outf << "release " << AXTC_RELEASE << endl;
+		outf << "major " << PIP_MAJOR_VERSION << endl;
+		outf << "minor " << PIP_MINOR_VERSION << endl;
+		outf << "release " << PIP_RELEASE << endl;
 		outf << "x " << x << endl;
 		outf << "y " << y << endl;
 		outf << "w " << wid<< endl;
@@ -845,7 +845,6 @@ int translator::parseComposite(ifstream &inf, ostream &outf, ostream &outd, ostr
 			outf << "topShadowColor index 0" << endl;
 			outf << "botShadowColor index 14" << endl;
 		}
-		outf << "noScroll" << endl;
 		outf << "displaySource \"file\"" << endl;
 		outf << "file \"" << file  << "\"" << endl;
 		outf << "sizeOfs 5" << endl;
@@ -853,6 +852,7 @@ int translator::parseComposite(ifstream &inf, ostream &outf, ostream &outd, ostr
 		outf << "displayFileName {" << endl;
 		outf << "  " << 0 << " \"" << file << "\"" << endl;
 		outf << "}" << endl;
+		outf << "noScroll" << endl;
 		outf << "endObjectProperties" << endl;
 
 		outf << endl;
@@ -864,7 +864,9 @@ int translator::parseComposite(ifstream &inf, ostream &outf, ostream &outd, ostr
 		outf <<  tstr << calc << tstr2 << chan ;
 		outf << ")\"" << endl;
 */
-		outf << "visPv " << "\"" << chan << "\"" << endl;
+		if ( chan.length() > 0 ) {
+			outf << "visPv " << "\"" << chan << "\"" << endl;
+		}
 		outf << "visMin " << "\"" << calc << "\"" << endl;
         outf << "visMax " << "\"" << atoi(calc.c_str()) +1 << "\"" << endl;
 
