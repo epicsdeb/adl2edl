@@ -235,7 +235,7 @@ char value[14][63+1];
       }
       else {
 
-	strcpy( value[n], "" );
+        strcpy( value[n], "" );
         //printf( "value[%-d] = NULL\n", n );
 
       }
@@ -251,7 +251,7 @@ char value[14][63+1];
         state = GETTING_LAST_STRING;
       }
       else {
-	state = DONE;
+        state = DONE;
       }
 
       break;
@@ -911,7 +911,7 @@ char **list;
           }
           else {
             return FONTINFO_NO_FONT;
-	  }
+          }
         }
 
         XFreeFontNames( list );
@@ -1173,16 +1173,16 @@ XFontStruct *fs;
         tail->flink = NULL;
 
         fs = getXFontStruct( cur->name );
-	if ( fs ) {
-	  cur->ascent = fs->ascent;
-	  cur->descent = fs->descent;
-	  cur->height = fs->ascent + fs->descent;
-	}
-	else {
-	  cur->ascent = 0;
-	  cur->descent = 0;
-	  cur->height = 0;
-	}
+        if ( fs ) {
+          cur->ascent = fs->ascent;
+          cur->descent = fs->descent;
+          cur->height = fs->ascent + fs->descent;
+        }
+        else {
+          cur->ascent = 0;
+          cur->descent = 0;
+          cur->height = 0;
+        }
 
         empty = 0;
 
@@ -1261,10 +1261,10 @@ int foundBrace;
       if ( tk1 ) {
         if ( tk1[0] == '}' ) {
           foundBrace = 1;
-	}
-	else {
+        }
+        else {
           foundBrace = 0;
-	}
+        }
       }
 
       if ( ! foundBrace ) {
@@ -1284,9 +1284,9 @@ int foundBrace;
           return stat; // return stat from getSingleFontSpec
 
         }
-	else {
+        else {
           //printf( "Font not found: %s", line );
-	}
+        }
 
       }
 
@@ -1359,8 +1359,8 @@ int empty = 1;
             fclose( f );
             return stat;
           }
-	}
-	else {
+        }
+        else {
 
           // tk1 points to first character after "<name>="
 
@@ -1373,7 +1373,7 @@ int empty = 1;
             return stat;
           }
 
-	}
+        }
 
       }
       else {
