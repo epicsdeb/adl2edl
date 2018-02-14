@@ -1,7 +1,9 @@
+#include <unistd.h>
 #include "translator.h"
 #include "fonts.h"
 
 using std::endl;
+using std::cerr;
 using std::cout;
 using std::ifstream;
 using std::ofstream;
@@ -17,39 +19,66 @@ bool urgb;
 bool retitle; // already used 'rename'
 int default_clr	= 14;
 int default_bclr = 3;
+int debugAdl2Edl = 0;
 
 fontInfoClass fi;
 static char *fptr;
 
+void usage( )
+{
+	cout << "Version 1.5" << endl;
+	cout << "usage: [-h] [-rgb] [-rename] [-d LEVEL] medm_file [edm_file]" << endl;
+	cout << "   medm_file is the name of an medm file to translate to edm." << endl;
+	cout << "      medm_file will typically end in .adl" << endl;
+	cout << "   edm_file is the edm filename." << endl;
+	cout << "      If not used, the translation is written to stdout" << endl;
+	cout << "      and diagnostic output to ${medm_file}.adl.db" << endl;
+	cout << "Options:" << endl;
+	cout << " -h          show this help message and exit" << endl;
+	cout << " -rgb        use rgb mode to specify colors in the edm translation" << endl;
+	cout << " -rename     rename the medm file substituting .edl for .adl" << endl;
+	cout << " -d LEVEL    set the diagnostic output to LEVEL" << endl;
+}
 
 int main(int argc, char **argv)
 {
 	char outfile[200];
-	int used = 1;
 	urgb = false;
 	retitle = false;
 	int numFiles;
 
-	if(argc < 2) {
-		cout << "Version 1.4" << endl;
-		cout << "usage: [-rgb] [-rename] medm_file [edm_file]" << endl;
-		exit(1);
-	}
-
-	translator *trans;
-	trans = new translator();
-
-	if(argc > 2) {
-		if(!strncmp(argv[1], "-rgb", 4) || !strncmp(argv[2], "-rgb", 4)) {
-			urgb = true;
-			used++;
+	while ( getopt( argc, argv, "hd:r:" ) != -1 ) {
+		switch ( optopt )
+		{
+		case 'r':
+			if ( strncmp( optarg, "gb", 2 ) == 0 ) {
+				urgb = true;
+			}
+			else if ( strncmp( optarg, "ename", 5 ) == 0 ) {
+				retitle = true;
+			} else {
+				cerr << "Unsupported option: -r" << optarg << endl;
+				usage();
+				return -1;
+			}
+			break;
+		case 'd':
+			if ( sscanf( optarg, "%d", &debugAdl2Edl ) != 1 ) {
+				cerr << "Invalid debug level: " << optarg << endl;
+				usage();
+				return -1;
+			}
+			break;
+		case 'h':
+		default:
+			usage();
+			return 0;
+		case '?':
+			cerr << "Unsupported option: -" << (char) optopt << endl;
+			usage();
+			return -1;
 		}
-		if(!strncmp(argv[1], "-rename", 7) || !strncmp(argv[2], "-rename", 7)) {
-			retitle = true;
-			used++;
-		}
 	}
-
 
 	// 2 0	t *.adl
 	// 3 1	t -rgb *.adl
@@ -59,33 +88,35 @@ int main(int argc, char **argv)
 	// 4 2 	t -rename *.adl 
 	// 5 2  t -rgb -rename *.adl *.edl
 
-	//cout << "rgb " << urgb << endl;
-	//cout << "rename " << retitle << endl;
+	numFiles = argc - optind;
+	if ( numFiles == 1 ) {
+		// If user has named only one file, use the inputfilename + ".db"
+		// for diagnostic output.
+		strncpy(outfile, argv[optind], 196);
+		strcat(outfile, ".db");
+	} else if ( numFiles == 2 ) {
+		strncpy(outfile, argv[optind+1], 196);
+	} else {
+		cerr << "Invalid filename specifications" << endl;
+		usage();
+		return -1;
+	}
+	if ( debugAdl2Edl > 1 ) {
+		cout << "f1: " << argv[optind] << endl;
+		cout << "f2: " << outfile << endl;
+	}
 
-	numFiles = argc - used;
 	char *dup0;
 	string dir0;
-	dup0 = strdup(argv[used]);
+	dup0 = strdup(argv[optind]);
 	dir0 = dirname(dup0);
 	translator::dir = dir0;
 
-	//cout << "numFiles " << numFiles << endl;
-	//cout << "used " << used << endl;
-	// If user has named only one file, use the inputfilename + ".db"
-	// for diagnostic output.
-	if(numFiles == 1) {
-		strncpy(outfile, argv[used], 196);
-		strcat(outfile, ".db");
-		//cout << "f1: " << argv[used] << endl;
-		//cout << "f2: " << outfile << endl;
-		//exit(1);
-		trans->processFile(argv[used], outfile);
-	} else {
-		//cout << "f1: " << argv[used] << endl;
-		//cout << "f2: " << argv[used+1] << endl;
-		//exit(1);
-		trans->processFile(argv[used], argv[used+1]);
-	}
+	translator *trans;
+	trans = new translator();
+
+	int result = trans->processFile(argv[optind], outfile);
+	return 0;  // processFile always returns 1
 }
 
 cmapclass::cmapclass()
