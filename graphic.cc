@@ -792,10 +792,14 @@ int textclass::parse(ifstream &inf, ostream &outf, ostream &outd)
 	if ( fptr ) 
 		outf << "font \"" << fptr << "\"" << endl;
     else 
-		outf << "font \"" << "helvetica-medium-r-8.0" << "\"" << endl;
+		outf << "font \"" << "helvetica-bold-r-12.0" << "\"" << endl;
 
 	if(align.length())
 		outf << "fontAlign \"" << align << "\"" << endl;
+
+	if(!urgb) {
+		clr = 14;	// Black-14
+	}
 
 	if(urgb) outf << "fgColor rgb " << cmap.getRGB(clr) << endl;
 	else outf << "fgColor index " << clr << endl;

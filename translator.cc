@@ -73,7 +73,7 @@ int main(int argc, char **argv)
 	//cout << "used " << used << endl;
 	// If user has named only one file, use the inputfilename + ".db"
 	// for diagnostic output.
-	if(numFiles == 1  ||  urgb == 1) {
+	if(numFiles == 1) {
 		strncpy(outfile, argv[used], 196);
 		strcat(outfile, ".db");
 		//cout << "f1: " << argv[used] << endl;
@@ -200,18 +200,18 @@ int cmapclass::parse(ifstream &inf, ostream &outf, ostream &outd)
 		outf << "fgColor index " << default_clr << endl;
 		outf << "bgColor index " << default_bclr << endl;
 		outf << "textColor index 14" << endl;
-		outf << "ctlFgColor1 index 30" << endl;
-		outf << "ctlFgColor2 index 32" << endl;
-		outf << "ctlBgColor1 index 34" << endl;
-		outf << "ctlBgColor2 index 35" << endl;
-		outf << "topShadowColor index 37" << endl;
-		outf << "botShadowColor index 44" << endl;
+		outf << "ctlFgColor1 index 25" << endl;
+		outf << "ctlFgColor2 index 15" << endl;
+		outf << "ctlBgColor1 index 5" << endl;
+		outf << "ctlBgColor2 index 12" << endl;
+		outf << "topShadowColor index 1" << endl;
+		outf << "botShadowColor index 13" << endl;
 	}
 
+	outf << "showGrid" << endl;
 	outf << "snapToGrid" << endl;
-	outf << "gridSize 5" << endl;
+	outf << "gridSize 4" << endl;
 	outf << "endScreenProperties" << endl;
-	outf << endl;
 	return 1;
 
 }
@@ -803,7 +803,10 @@ int translator::parseComposite(ifstream &inf, ostream &outf, ostream &outd, ostr
 		outf << "displaySource \"file\"" << endl;
 		outf << "file \"" << file << "\"" << endl;
 		outf << "sizeOfs 5" << endl;
-		outf << "numDsps 0" << endl;
+		outf << "numDsps 1" << endl;
+		outf << "displayFileName {" << endl;
+		outf << "  " << 0 << " \"" << file << "\"" << endl;
+		outf << "}" << endl;
 		outf << "endObjectProperties" << endl;
 	} else {
 		//outd << "CASE 3 embed win with vis param" << endl;
@@ -846,7 +849,10 @@ int translator::parseComposite(ifstream &inf, ostream &outf, ostream &outd, ostr
 		outf << "displaySource \"file\"" << endl;
 		outf << "file \"" << file  << "\"" << endl;
 		outf << "sizeOfs 5" << endl;
-		outf << "numDsps 0" << endl;
+		outf << "numDsps 1" << endl;
+		outf << "displayFileName {" << endl;
+		outf << "  " << 0 << " \"" << file << "\"" << endl;
+		outf << "}" << endl;
 		outf << "endObjectProperties" << endl;
 
 		outf << endl;
@@ -925,7 +931,7 @@ int headclass::parse(ifstream &inf, ostream &outf, ostream &outd)
 	if ( fptr ) {
 		outf << "ctlFont \"" << fptr << "\"" << endl;
 	} else {
-		outf << "ctlFont \"" << "helvetica-medium-r-8.0" << "\"" << endl;
+		outf << "ctlFont \"" << "helvetica-bold-r-10.0" << "\"" << endl;
     }
 
 	fptr = fi.bestFittingFont( 25 );

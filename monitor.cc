@@ -312,7 +312,7 @@ int xyclass::parse(ifstream &inf, ostream &outf, ostream &outd)
     if ( fptr ) {
       outf << "font \"" << fptr << "\"" << endl;
     } else {
-      outf << "font \"" << "helvetica-medium-r-10.0" << "\"" << endl;
+      outf << "font \"" << "helvetica-bold-r-12.0" << "\"" << endl;
     }
 
     outf << "# Operating Modes" << endl;
@@ -752,7 +752,7 @@ int barclass::parse(ifstream &inf, ostream &outf, ostream &outd)
 	if ( fptr ) {
 		outf << "font \"" << fptr << "\"" << endl;
 	} else {
-		outf << "font \"" << "helvetica-medium-r-8.0" << "\"" << endl;
+		outf << "font \"" << "helvetica-bold-r-10.0" << "\"" << endl;
 	}
 
 	outf << "labelTicks 1" << endl;
@@ -885,7 +885,7 @@ int meterclass::parse(ifstream &inf, ostream &outf, ostream &outd)
 	if ( fptr ) {
 		outf << "scaleFontTag \"" << fptr << "\"" << endl;
 	} else {
-		outf << "scaleFontTag \"" << "helvetica-medium-r-8.0" << "\"" << endl;
+		outf << "scaleFontTag \"" << "helvetica-bold-r-10.0" << "\"" << endl;
 	}
 
 	outf << "endObjectProperties" << endl;
@@ -935,7 +935,8 @@ int textmonclass::parse(ifstream &inf, ostream &outf, ostream &outd, int edit)
 			else if(!strcmp(s1,"align")) {
 				if(strstr(line.c_str(), "horiz")!= 0x0) {
 					if(strstr(line.c_str(), "center")!= 0x0) align = "center";
-						else if(strstr(line.c_str(), "right")!= 0x0) align = "right";
+					else if(strstr(line.c_str(), "right")!= 0x0) align = "right";
+					else if(strstr(line.c_str(), "left")!= 0x0) align = "left";
 					}
 				}
             else if(!strcmp(s1,"chan") || !strcmp(s1,"ctrl") || !strcmp(s1,"rdbk")) { 
@@ -967,8 +968,14 @@ int textmonclass::parse(ifstream &inf, ostream &outf, ostream &outd, int edit)
     } while (open > 0);
 
 	outf << endl;
-	outf << "# (Text Control)" << endl;
-	outf << "object activeXTextDspClass" << endl;
+	if ( edit ) {
+		outf << "# (Text Control)" << endl;
+		outf << "object activeXTextDspClass" << endl;
+	}
+	else {
+		outf << "# (Text Monitor)" << endl;
+		outf << "object activeXTextDspClass:noedit" << endl;
+	}
 	outf << "beginObjectProperties" << endl;
 
     outf << "major " << XTDC_MAJOR_VERSION  << endl;
@@ -987,24 +994,35 @@ int textmonclass::parse(ifstream &inf, ostream &outf, ostream &outd, int edit)
 		if ( fptr ) {
 			outf << "font \"" << fptr << "\"" << endl;
 		} else {
-			outf << "font \"" << "helvetica-medium-r-8.0" << "\"" << endl;
+			outf << "font \"" << "helvetica-bold-r-12.0" << "\"" << endl;
 		}
 	} else {
 		fptr = fi.bestFittingFont( (int) (hgt-.3*hgt) );
 		if ( fptr ) {
 			outf << "font \"" << fptr << "\"" << endl;
 		} else {
-			outf << "font \"" << "helvetica-medium-r-8.0" << "\"" << endl;
+			outf << "font \"" << "helvetica-bold-r-12.0" << "\"" << endl;
 		}
 	}
 	if(align.length())
         outf << "fontAlign \"" << align << "\"" << endl;
+	else
+        outf << "fontAlign \"center\"" << endl;
 
 	//if(edit) {
 		outf << "smartRefresh" << endl;
 		outf << "fastUpdate" << endl;
 	//}
 
+	if(!urgb) {
+		if(edit) {
+			clr  = 25;
+			bclr = 5;
+		} else {
+			clr  = 15;
+			bclr = 12;
+		}
+	}
 	if(urgb) outf << "fgColor rgb " << cmap.getRGB(clr) << endl;
     else outf << "fgColor index " << clr << endl;
     if(colormode == 1) {   
@@ -1013,7 +1031,7 @@ int textmonclass::parse(ifstream &inf, ostream &outf, ostream &outd, int edit)
 	if(urgb) outf << "bgColor rgb " << cmap.getRGB(bclr) << endl;
     else outf << "bgColor index " << bclr << endl;
 	if(edit) outf << "editable" << endl;
-	outf << "autoHeight" << endl;
+	// outf << "autoHeight" << endl;
 	if(format == "\"truncated\""){
     	outf << "format \"decimal\"" << endl;
 		outf << "precision 0" << endl;
@@ -1029,10 +1047,10 @@ int textmonclass::parse(ifstream &inf, ostream &outf, ostream &outd, int edit)
 		if(prec.length()) outf << "precision " << prec << endl;
 	}
 	if(edit) outf << "motifWidget" << endl;
-	//outf << "limitsFromDb" << endl;
+	outf << "limitsFromDb" << endl;
 	if(urgb) outf << "nullColor rgb " << cmap.getRGB(32) << endl;
 	else outf << "nullColor index 32" << endl;
-	outf << "useHexPrefix" << endl;
+	// outf << "useHexPrefix" << endl;
 	outf << "objType \"controls\"" << endl;
 	outf << "newPos" << endl;
 	outf << "endObjectProperties" << endl;
