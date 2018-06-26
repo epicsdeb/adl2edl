@@ -46,16 +46,20 @@ int main(int argc, char **argv)
 	urgb = false;
 	retitle = false;
 	int numFiles;
+	int	nextOption;
 
-	while ( getopt( argc, argv, "hd:r:" ) != -1 ) {
-		switch ( optopt )
+	while ( (nextOption = getopt( argc, argv, "hd:r:" )) != -1 ) {
+		// printf( "Checking option %c\n", (char) nextOption );
+		switch ( nextOption )
 		{
 		case 'r':
 			if ( strncmp( optarg, "gb", 2 ) == 0 ) {
 				urgb = true;
+				// printf( "Setting urgb = true\n" );
 			}
 			else if ( strncmp( optarg, "ename", 5 ) == 0 ) {
 				retitle = true;
+				// printf( "Setting retitle = true\n" );
 			} else {
 				cerr << "Unsupported option: -r" << optarg << endl;
 				usage();
@@ -63,11 +67,14 @@ int main(int argc, char **argv)
 			}
 			break;
 		case 'd':
+			// printf( "Checking optarg %s\n", optarg );
 			if ( sscanf( optarg, "%d", &debugAdl2Edl ) != 1 ) {
 				cerr << "Invalid debug level: " << optarg << endl;
 				usage();
 				return -1;
 			}
+			if ( debugAdl2Edl != 0 )
+				printf( "Setting debugAdl2Edl = %d\n", debugAdl2Edl );
 			break;
 		case 'h':
 		default:
