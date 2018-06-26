@@ -37,6 +37,7 @@ void usage( )
 	cout << " -h          show this help message and exit" << endl;
 	cout << " -rgb        use rgb mode to specify colors in the edm translation" << endl;
 	cout << " -rename     rename the medm file substituting .edl for .adl" << endl;
+	cout << " -f fontFile set the font filename" << endl;
 	cout << " -d LEVEL    set the diagnostic output to LEVEL" << endl;
 }
 
@@ -48,10 +49,15 @@ int main(int argc, char **argv)
 	int numFiles;
 	int	nextOption;
 
-	while ( (nextOption = getopt( argc, argv, "hd:r:" )) != -1 ) {
+	while ( (nextOption = getopt( argc, argv, "hd:r:f:" )) != -1 ) {
 		// printf( "Checking option %c\n", (char) nextOption );
 		switch ( nextOption )
 		{
+		case 'f':
+			// Get the font filename
+			fontFileName = optarg;
+			// printf( "Setting fontFileName = %s\n", fontFileName );
+			break;
 		case 'r':
 			if ( strncmp( optarg, "gb", 2 ) == 0 ) {
 				urgb = true;
@@ -112,6 +118,9 @@ int main(int argc, char **argv)
 		cout << "f1: " << argv[optind] << endl;
 		cout << "f2: " << outfile << endl;
 	}
+
+	// Initialize fontInfoClass
+    fi.InitializeXt( );
 
 	char *dup0;
 	string dir0;

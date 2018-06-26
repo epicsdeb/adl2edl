@@ -218,4 +218,5 @@ XtAppContext appCtx;
 
 };
 
+extern	const char * fontFileName;
 #endif

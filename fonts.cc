@@ -74,10 +74,9 @@ fontInfoClass::fontInfoClass ( void )
 
   appCtx = NULL;
   display = NULL;
-
-  // TODO: Move this out of constructor
-  initOK = this->InitializeXt( );
 }
+
+const char * fontFileName = "fonts.adl2edl";
 
 int fontInfoClass::InitializeXt( void )
 {
@@ -91,9 +90,9 @@ int fontInfoClass::InitializeXt( void )
   tail = head;
   tail->flink = NULL;
 
-  const char * fontFileName = "fonts.adl2edl";
   int stat = initFromFile( appCtx, display, fontFileName );
   if ( stat == FONTINFO_SUCCESS ) {
+  	initOK = 1;
     return 1;
   } else {
     printf( "fontInfoClass error: Invalid font conversion file %s\n",
