@@ -44,6 +44,7 @@ int byteclass::parse(ifstream &inf, ostream &outf, ostream &outd)
 	sbit = -1;
 	ebit = -1;
 
+	colormode = 0;
 	//outd << "In Byte " << translator::line_ctr << endl;
 	do {
 		getline(inf,line);
@@ -174,6 +175,7 @@ int xyclass::parse(ifstream &inf, ostream &outf, ostream &outd)
 	int i;
 	string bclose("}");
 
+	colormode = 0;
 	//outd << "In XY " << translator::line_ctr << endl;
 	do {
 		getline(inf,line);
@@ -446,6 +448,7 @@ int stripclass::parse(ifstream &inf, ostream &outf, ostream &outd)
 	string tstr;
 	int i;
 
+	colormode = 0;
 	//outd << "In Strip " << translator::line_ctr << endl;
 	do {
 		getline(inf,line);
@@ -644,6 +647,7 @@ int barclass::parse(ifstream &inf, ostream &outf, ostream &outd)
 	string max;
 	string min;
 
+	colormode = 0;
 	//outd << "In Bar " << translator::line_ctr << endl;
 
 	do {
@@ -793,6 +797,7 @@ int meterclass::parse(ifstream &inf, ostream &outf, ostream &outd)
 {
 	string min;
 	string max;
+	colormode = 0;
 	//outd << "In Meter " << translator::line_ctr << endl;
 	do {
 		getline(inf,line);
@@ -918,6 +923,7 @@ int textmonclass::parse(ifstream &inf, ostream &outf, ostream &outd, int edit)
 		colormode = 1;
 	}
 
+	colormode = 0;
 	//outd << "In Textmoner & Textupdte " << translator::line_ctr << endl;
     do {
         getline(inf,line);
@@ -1026,7 +1032,7 @@ int textmonclass::parse(ifstream &inf, ostream &outf, ostream &outd, int edit)
 	if(align.length())
         outf << "fontAlign \"" << align << "\"" << endl;
 	else
-        outf << "fontAlign \"center\"" << endl;
+        outf << "fontAlign \"left\"" << endl;
 
 	if(!urgb) {
 		if(edit) {
@@ -1037,7 +1043,15 @@ int textmonclass::parse(ifstream &inf, ostream &outf, ostream &outd, int edit)
 			bclr = 12;
 		}
 	}
-	if(urgb) outf << "fgColor rgb " << cmap.getRGB(clr) << endl;
+	if(urgb) {
+		if(colormode == 1) {   
+			// medm shows fg in green for alarm colormode
+			// edm needs to have fgColor set to green for same behavior
+			outf << "fgColor rgb " << "0 65535 0" << endl;
+		} else {
+			outf << "fgColor rgb " << cmap.getRGB(clr) << endl;
+		}
+	}
     else outf << "fgColor index " << clr << endl;
     if(colormode == 1) {   
         outf << "fgAlarm" << endl;

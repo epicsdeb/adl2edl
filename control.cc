@@ -39,6 +39,7 @@ int buttonclass::parse(ifstream &inf, ostream &outf, ostream &outd)
 
 	bool stacking = 0;
 
+	colormode = 0;
 	//outd << "In ChoiceButton "  << translator::line_ctr << endl;
 	do {
 		getline(inf,line);
@@ -83,14 +84,26 @@ int buttonclass::parse(ifstream &inf, ostream &outf, ostream &outd)
     outf << "w " << wid<< endl;
     outf << "h " << hgt << endl;
 	if(urgb) {
-		outf << "fgColor rgb " << cmap.getRGB(clr) << endl;
+		if(colormode == 1) {   
+			// medm shows fg in green for alarm colormode
+			// edm needs to have fgColor set to green for same behavior
+			outf << "fgColor rgb " << "0 65535 0" << endl;
+		} else {
+			outf << "fgColor rgb " << cmap.getRGB(clr) << endl;
+		}
 		outf << "bgColor rgb " << cmap.getRGB(bclr) << endl;
 		outf << "selectColor rgb " << cmap.getRGB(bclr) << endl;
 		outf << "inconsistentColor rgb " << cmap.getRGB(clr) << endl;
 		outf << "topShadowColor rgb " << cmap.getRGB(0) << endl;
 		outf << "botShadowColor rgb " << cmap.getRGB(14) << endl;
 	} else {
-		outf << "fgColor index " << clr << endl;
+		if(colormode == 1) {   
+			// medm shows fg in green for alarm colormode
+			// edm needs to have fgColor set to green for same behavior
+			outf << "fgColor index " << 15 << endl;
+		} else {
+			outf << "fgColor index " << clr << endl;
+		}
 		outf << "bgColor index " << bclr << endl;
 		outf << "selectColor index " << bclr << endl;
 		outf << "inconsistentColor index " << clr << endl;
@@ -146,6 +159,7 @@ int valclass::parse(ifstream &inf, ostream &outf, ostream &outd)
 	string precDefault("1");
 
 	int direction = 0;
+	colormode = 0;
 
 	//outd << "In Valuator "  << translator::line_ctr << endl;
 	do {
@@ -273,6 +287,7 @@ int mbuttonclass::parse(ifstream &inf, ostream &outf, ostream &outd)
 	string tname;
 	int tpos;
 
+	colormode = 0;
 	//outd << "In MessageButton " << translator::line_ctr  << endl;
 	do {
 		getline(inf,line);
@@ -391,6 +406,7 @@ int shellclass::parse(ifstream &inf, ostream &outf, ostream &outd)
 	vector <shellnode> shelllist;
 	shellnode *sh;
 
+	colormode = 0;
 	//outd << "In Shell " << translator::line_ctr << endl;
 	do {
 		getline(inf,line);
@@ -658,7 +674,7 @@ int relatedclass::parse(ifstream &inf, ostream &outf, ostream &outd)
 				tname = s2;
 				while((tpos = tname.find(squote,0)) != -1)
                 	tname.replace(tpos,1,nil);
-				outd << "START " << tname << endl;
+				// outd << "START " << tname << endl;
 				saved_name = tname;
 
 				if(tname.length() != 0) { // medm ignores blank names. edm does not.
@@ -937,6 +953,7 @@ menuclass::~menuclass()
 // process the "menu_button" object
 int menuclass::parse(ifstream &inf, ostream &outf, ostream &outd)
 {
+	colormode = 0;
 	//outd << "In menubutton " << translator::line_ctr << endl;
 	do {
 		getline(inf,line);
