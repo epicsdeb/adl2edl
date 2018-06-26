@@ -1,7 +1,8 @@
 #include <stdio.h>
 #include "fonts.h"
 
-static fontNameListPtr head, tail;
+static fontNameListPtr head	= NULL;
+static fontNameListPtr tail = NULL;
 
 static int getMatch (
   char *name,
@@ -50,27 +51,39 @@ char *s;
 
 }
 
-fontInfoClass::fontInfoClass ( void ) {   // constructor
-
-int stat, l, h;
-int argc = 0;
-fontNameListPtr cur;
-
-  initOK = 0;
-
-  fontListEmpty = 1;
-
-  requireExactMatch = 1;
+fontInfoClass::fontInfoClass ( void )
+	:	initOK( 0 ),
+		fontList( NULL ),
+		fontListEmpty( 1 ),
+		mediumString(),
+		boldString(),
+		regularString(),
+		italicString(),
+		lineNum( 1 ),
+		lastNonCommentLine( 1 ),
+  		requireExactMatch( 1 ),
+		display( NULL ),
+		appCtx( NULL )
+{   // constructor
 
   strcpy( mediumString, "medium" );
   strcpy( boldString, "bold" );
   strcpy( regularString, "r" );
   strcpy( italicString, "i" );
 
-  lineNum = lastNonCommentLine = 1;
 
+  appCtx = NULL;
+  display = NULL;
+
+  // TODO: Move this out of constructor
+  initOK = this->InitializeXt( );
+}
+
+int fontInfoClass::InitializeXt( void )
+{
   XtToolkitInitialize();
   appCtx = XtCreateApplicationContext();
+  int argc = 0;
   display = XtOpenDisplay( appCtx, "", "fonts", "fonts", NULL, 0,
    &argc, NULL );
 
@@ -78,9 +91,16 @@ fontNameListPtr cur;
   tail = head;
   tail->flink = NULL;
 
-  stat = initFromFile( appCtx, display, "fonts.adl2edl" );
-  if ( stat & 1 ) initOK = 1;
+  const char * fontFileName = "fonts.adl2edl";
+  int stat = initFromFile( appCtx, display, fontFileName );
+  if ( stat == FONTINFO_SUCCESS ) {
+    return 1;
+  } else {
+    printf( "fontInfoClass error: Invalid font conversion file %s\n",
+            fontFileName );
+  }
 
+  return 0;
 }
 
 fontInfoClass::~fontInfoClass ( void ) {   // destructor
@@ -162,27 +182,28 @@ static const int GETTING_STRING = 2;
 static const int GETTING_LAST_STRING = 3;
 static const int STORE_VALUE = 4;
 static const int DONE = -1;
-int l, ii, iii, i = 0, first = 0, last = 0, n = 0;
+int l, ii, iii, nStrings = 0, first = 0, last = 0, nProperties = 0;
 int state = GETTING_DASH;
 char value[14][63+1];
 
   l = strlen( fontSpec );
+  // printf( "parseFontSpec: %s\n", fontSpec );
 
   while ( state != DONE ) {
 
-    //printf( "s: %-d, n=%-d, i=%-d\n", state, n, i );
+    // printf( "state: %-d, nProperties=%-d, nStrings=%-d\n", state, nProperties, nStrings );
 
     switch ( state ) {
 
     case GETTING_DASH:
-
-      if ( fontSpec[i] == '-' ) {
-        i++;
-        if ( i >= l ) return FONTINFO_BADSPEC;
-        first = i;
+      // printf( "state: GETTING_DASH, nProperties=%-d, nStrings=%-d\n", nProperties, nStrings );
+      if ( fontSpec[nStrings] == '-' ) {
+        nStrings++;
+        if ( nStrings >= l ) return FONTINFO_BADSPEC;
+        first = nStrings;
         state = GETTING_STRING;
       }
-      else if ( fontSpec[i] == '\t' ) {
+      else if ( fontSpec[nStrings] == '\t' ) {
         return FONTINFO_BADSPEC;
       }
       else {
@@ -192,62 +213,61 @@ char value[14][63+1];
       break;
 
     case GETTING_STRING:
+      // printf( "state: GETTING_STRING, nProperties=%-d, nStrings=%-d\n", nProperties, nStrings );
 
-      if ( fontSpec[i] == '-' ) {
-        last = i - 1;
+      if ( fontSpec[nStrings] == '-' ) {
+        last = nStrings - 1;
         state = STORE_VALUE;
       }
-      else if ( fontSpec[i] == '\t' ) {
+      else if ( fontSpec[nStrings] == '\t' ) {
         return FONTINFO_BADSPEC;
       }
 
-      i++;
-      if ( i >= l ) return FONTINFO_BADSPEC;
+      nStrings++;
+      if ( nStrings >= l ) return FONTINFO_BADSPEC;
 
       break;
 
     case GETTING_LAST_STRING:
+      // printf( "state: GETTING_LAST_STRING, nProperties=%-d, nStrings=%-d\n", nProperties, nStrings );
 
-      if ( fontSpec[i] == '\t' ) {
-        last = i - 1;
+      if ( fontSpec[nStrings] == '\t' ) {
+        last = nStrings - 1;
         state = STORE_VALUE;
       }
 
-      i++;
-      if ( i >= l ) {
-        last = i - 1;
+      nStrings++;
+      if ( nStrings >= l ) {
+        last = nStrings - 1;
         state = STORE_VALUE;
       }
 
       break;
 
     case STORE_VALUE:
-
       if ( last >= first ) {
 
         for ( ii=first, iii=0; ii<=last; ii++, iii++ ) {
-          value[n][iii] = fontSpec[ii];
+          value[nProperties][iii] = fontSpec[ii];
         }
-        value[n][iii] = 0;
+        value[nProperties][iii] = 0;
 
-        //printf( "value[%-d] = [%s]\n", n, value[n] );
-
+        // printf( "state: STORE_VALUE property %-d = \"%s\", nProperties=%-d, nStrings=%-d\n", nProperties, value[nProperties], nProperties, nStrings );
       }
       else {
 
-        strcpy( value[n], "" );
-        //printf( "value[%-d] = NULL\n", n );
-
+        strcpy( value[nProperties], "" );
+        // printf( "state: STORE_VALUE property %-d = NULL, nProperties=%-d, nStrings=%-d\n", nProperties, nProperties, nStrings );
       }
 
-      first = i;
+      first = nStrings;
 
-      n++;
+      nProperties++;
 
-      if ( n < 13 ) {
+      if ( nProperties < 13 ) {
         state = GETTING_STRING;
       }
-      else if ( n == 13 ) {
+      else if ( nProperties == 13 ) {
         state = GETTING_LAST_STRING;
       }
       else {
@@ -308,7 +328,7 @@ char *tk, spec[127+1], rest[127+1], foundry[63+1], family[63+1], weight[31+1],
   Strncat( newFont, "*-", 127 );
   Strncat( newFont, rest, 127 );
 
-  //  printf( "new font is %s\n", newFont );
+  //  printf( "new font 1 is %s\n", newFont );
 
   list = XListFonts( d, newFont, 1, n );
   if ( *n == 1 ) return list;
@@ -330,7 +350,7 @@ char *tk, spec[127+1], rest[127+1], foundry[63+1], family[63+1], weight[31+1],
   Strncat( newFont, "*-", 127 );
   Strncat( newFont, rest, 127 );
 
-//   printf( "new font is %s\n", newFont );
+//   printf( "new font 2 is %s\n", newFont );
 
   list = XListFonts( d, newFont, 1, n );
   if ( *n == 1 ) return list;
@@ -353,7 +373,7 @@ char *tk, spec[127+1], rest[127+1], foundry[63+1], family[63+1], weight[31+1],
   Strncat( newFont, "*-", 127 );
   Strncat( newFont, rest, 127 );
 
-//   printf( "new font is %s\n", newFont );
+//   printf( "new font 3 is %s\n", newFont );
 
   list = XListFonts( d, newFont, 1, n );
   if ( *n == 1 ) return list;
@@ -559,7 +579,7 @@ char spec[127+1], name[127+1], foundary[63+1], family[63+1], weight[63+1],
 
   strncpy( spec, list[0], 127 );
 
-  //printf( "Font Spec: [%s]\n", spec );
+  //printf( "Font Spec 4: [%s]\n", spec );
 
   stat = parseFontSpec( spec, foundary, family, weight, slant, size );
 
@@ -1355,7 +1375,9 @@ int empty = 1;
         if ( strcmp( tk1, "{" ) == 0 ) { // font groups
           stat = processFontGroup( app, d, userFontFamilyName, f,
            major, minor, release );
+		  // printf( "processFontGroup %s status: %d\n", userFontFamilyName, stat );
           if ( !( stat & 1 ) ) {
+            printf( fontInfoClass_str12, lastNonCommentLine );
             fclose( f );
             return stat;
           }
@@ -1452,19 +1474,21 @@ XmFontListEntry entry;
   stat = getMatch( name, &cur );
   if ( !(stat & 1) ) return (XFontStruct *) NULL;
 
-  if ( !cur ) return (XFontStruct *) NULL;
+  if ( !cur ) {
+    printf( "getXFontStruct error: no match for %s\n", name );
+    return (XFontStruct *) NULL;
+  }
 
   if ( cur->fontLoaded ) return cur->fontStruct;
-
 
   cur->fontStruct = XLoadQueryFont( this->display, cur->fullName );
 
   entry = XmFontListEntryLoad( this->display, cur->fullName,
    XmFONT_IS_FONT, cur->name );
 
-
   if ( entry ) {
 
+    //printf( "getXFontStruct( %s ) found %s\n", name, cur->Name );
 
     if ( this->fontListEmpty ) {
       this->fontList = XmFontListAppendEntry( NULL, entry );
@@ -1477,6 +1501,9 @@ XmFontListEntry entry;
     XmFontListEntryFree( &entry );
 
 
+  } else {
+    printf( "getXFontStruct( %s ) error: font not supported %s\n",
+            name, cur->fullName );
   }
 
   if ( cur->fontStruct ) {
@@ -1584,29 +1611,37 @@ char *fontInfoClass::bestFittingFont (
   int height )
 {
 
-fontNameListPtr cur;
-char *best;
+fontNameListPtr     cur     = NULL;
+fontNameListPtr     bestFit = NULL;
 
-  if ( !initOK ) return NULL;
+  if ( !initOK ) {
+    return NULL;
+  }
 
-  cur = head->flink;
-
-  if ( cur ) {
-    best = cur->name; // smallest
+  if ( head != NULL and head->flink != NULL ) {
+    bestFit = cur;  // smallest
+    cur = head->flink;
   }
   else {
-    best = NULL;
+    bestFit = NULL;
+    cur = NULL;
   }
 
   while ( cur ) {
     if ( cur->height > height ) {
-      return best;
+      break;
     }
-    best = cur->name;
+    bestFit = cur;
     cur = cur->flink;
   }
 
-  return best;
+#if 0
+  if ( bestFit )
+    printf( "bestFittingFont: Best %d height is %s\n", height, bestFit->name );
+  else
+    printf( "bestFittingFont: No match\n" );
+#endif
+  return( bestFit ? bestFit->name : NULL );
 
 }
 

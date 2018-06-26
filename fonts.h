@@ -73,6 +73,8 @@ fontInfoClass ( void );   // constructor
 
 ~fontInfoClass ( void );   // destructor
 
+int InitializeXt( void );
+
 char *getStrFromFile (
   char *str,
   int maxLen,
