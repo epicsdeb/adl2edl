@@ -1001,6 +1001,9 @@ int textmonclass::parse(ifstream &inf, ostream &outf, ostream &outd, int edit)
 	}
 	else if(format == "\"compact\""){
     	outf << "format \"decimal\"" << endl;
+	}
+	else if ( format.length() >= 2 && format[0] == '"' && format[format.length()-1] == '"' ) {
+    	outf << "format " << format << endl;
 	} else {
     	outf << "format \"" << format << "\"" << endl;
 	}
