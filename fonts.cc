@@ -1,7 +1,7 @@
 #include <stdio.h>
 #include "fonts.h"
 
-static fontNameListPtr head	= NULL;
+static fontNameListPtr head = NULL;
 static fontNameListPtr tail = NULL;
 
 static int getMatch (
@@ -52,18 +52,18 @@ char *s;
 }
 
 fontInfoClass::fontInfoClass ( void )
-	:	initOK( 0 ),
-		fontList( NULL ),
-		fontListEmpty( 1 ),
-		mediumString(),
-		boldString(),
-		regularString(),
-		italicString(),
-		lineNum( 1 ),
-		lastNonCommentLine( 1 ),
-  		requireExactMatch( 1 ),
-		display( NULL ),
-		appCtx( NULL )
+    :   initOK( 0 ),
+        fontList( NULL ),
+        fontListEmpty( 1 ),
+        mediumString(),
+        boldString(),
+        regularString(),
+        italicString(),
+        lineNum( 1 ),
+        lastNonCommentLine( 1 ),
+        requireExactMatch( 1 ),
+        display( NULL ),
+        appCtx( NULL )
 {   // constructor
 
   strcpy( mediumString, "medium" );
@@ -92,7 +92,7 @@ int fontInfoClass::InitializeXt( void )
 
   int stat = initFromFile( appCtx, display, fontFileName );
   if ( stat == FONTINFO_SUCCESS ) {
-  	initOK = 1;
+    initOK = 1;
     return 1;
   } else {
     printf( "fontInfoClass error: Invalid font conversion file %s\n",
@@ -1357,6 +1357,11 @@ int empty = 1;
 
       ctx1 = NULL;
       strcpy( buf, line );
+      if ( lineNum == 2 || lineNum == 3 ) {
+        if ( lineIsDefaultFontTag( line ) ) {
+            continue;
+        }
+      }
 
       tk1 = strtok_r( buf, "=\t\n()", &ctx1 );
       if ( tk1 ) {
@@ -1374,7 +1379,7 @@ int empty = 1;
         if ( strcmp( tk1, "{" ) == 0 ) { // font groups
           stat = processFontGroup( app, d, userFontFamilyName, f,
            major, minor, release );
-		  // printf( "processFontGroup %s status: %d\n", userFontFamilyName, stat );
+          // printf( "processFontGroup %s status: %d\n", userFontFamilyName, stat );
           if ( !( stat & 1 ) ) {
             printf( fontInfoClass_str12, lastNonCommentLine );
             fclose( f );
@@ -1416,6 +1421,38 @@ int empty = 1;
 
   return FONTINFO_SUCCESS;
 
+}
+
+// adl2edl doesn't use default font tags, but must
+// accept them as they are valid for edm version 3 font files.
+int fontInfoClass::lineIsDefaultFontTag( const char * line )
+{
+    char buf[255+1];
+    char *tk1, *ctx1;
+    int nTokens = 0;
+
+    // Default font tags don't have an equal sign
+    if ( strchr( line, '=' ) != NULL ) {
+        return 0;
+    }
+
+    strncpy( buf, line, 255 );
+
+    // Default font tags look like this w/ 4 tokens delimited by '-'
+    // helvetica-medium-r-10.0
+    tk1 = strtok_r( buf, "-\n", &ctx1 );
+    if ( tk1 == NULL ) {
+        return 0;
+    }
+    do  {
+        nTokens++;
+        tk1 = strtok_r( NULL, "-", &ctx1 );
+    }   while ( tk1 != NULL );
+
+    if ( nTokens != 4 )
+        return 0;
+
+    return 1;
 }
 
 int fontInfoClass::initFromFile (

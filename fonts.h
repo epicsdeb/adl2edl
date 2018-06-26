@@ -199,6 +199,8 @@ int textWidth (
 char *bestFittingFont (
   int height );
 
+int lineIsDefaultFontTag( const char * line );
+
 private:
 
 int initOK;
