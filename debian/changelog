@@ -1,3 +1,19 @@
+adl2edl (1.5) unstable; urgency=medium
+
+  *	Added support for parsing default font tags in EDM version 3 font files.
+  *	Fixed handling of embedded windows.
+  *	Improved font file error handling and diagnostics.
+  *	Added -f cmd line option to set font filename.
+  *	Added -h (help) and -d (debugMode) cmd line options.
+  *	Fixed defaults for colormode and alignment.
+  *	Fixed fgColor when alarms are enabled to match adl behavior.
+  *	Fixed double-quoted format strings in monitor.cc
+  *	Add support for left alignment and activeXTextDspClass:noedit
+  *	Fix bug that writes file to stdout instead of selected filename when -rgb flag is used.
+  *	Select more appropriate default fonts, colors, and settings.
+
+ -- Bruce Hill <bhill@slac.stanford.edu>  Tue, 26 Jun 2018 01:32:09 -0800
+
 adl2edl (1.4-6) unstable; urgency=low
 
   * Fix compiler and linking problems with debian 8
