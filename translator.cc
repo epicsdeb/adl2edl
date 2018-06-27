@@ -26,7 +26,7 @@ static char *fptr;
 
 void usage( )
 {
-	cout << "Version 1.5" << endl;
+	cout << "Version 1.6" << endl;
 	cout << "usage: [-h] [-rgb] [-rename] [-d LEVEL] medm_file [edm_file]" << endl;
 	cout << "   medm_file is the name of an medm file to translate to edm." << endl;
 	cout << "      medm_file will typically end in .adl" << endl;

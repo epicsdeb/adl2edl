@@ -1,3 +1,6 @@
+Version 1.6 June 27, 2018
+	Applying patch from M. Rivers to fix temp filename for parallel make.
+
 Version 1.5 June 26, 2018
 	Added support for parsing default font tags in EDM version 3 font files.
 	Fixed handling of embedded windows.
