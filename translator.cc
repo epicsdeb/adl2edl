@@ -315,11 +315,16 @@ int translator::processFile (char *in, char *out)
 	ostream *outd = (!normal_mode) ? (ostream *) &toutf: (ostream *) &cout;
 
 	// open temp file for bubbling control widgets
-	char tfilename[12];
-	strcpy(tfilename,"adltemp");
+	char tfilename[256];
+	strcpy(tfilename,"adltemp_XXXXXX");
+	int temp_fd = mkstemp(tfilename);
+	if (temp_fd == -1) {
+		printf("Error calling mkstemp for temporary file %s\n", tfilename);
+		exit(1);
+	}
 	ofstream outt(tfilename);
 	if(!outt) {
-		//cout << "unable to open adltemp" << endl;
+		printf("Error creating temporary output file %s\n", tfilename);
 		exit(1);
 	}
 
@@ -535,10 +540,9 @@ int translator::processFile (char *in, char *out)
 
 
 	// open temp file for bubble control widgets
-	strcpy(tfilename,"adltemp");
 	ifstream in_t(tfilename);
 	if(!in_t) {
-		*outd << "unable to open adltemp" << endl;
+		printf("Error creating temporary input file %s\n", tfilename);
 		exit(1);
 	}
 
@@ -549,6 +553,9 @@ int translator::processFile (char *in, char *out)
 		ctr++;
 	}
 	in_t.close();
+	outt.close();
+	close(temp_fd);
+	remove(tfilename);
 
 	return 1;
 }
