@@ -1,5 +1,10 @@
 #include <stdio.h>
+#include <iostream>
 #include "fonts.h"
+
+using std::endl;
+using std::cerr;
+using std::cout;
 
 static fontNameListPtr head = NULL;
 static fontNameListPtr tail = NULL;
@@ -95,8 +100,7 @@ int fontInfoClass::InitializeXt( void )
     initOK = 1;
     return 1;
   } else {
-    printf( "fontInfoClass error: Invalid font conversion file %s\n",
-            fontFileName );
+	cerr << "fontInfoClass error: Invalid font conversion file " << fontFileName << endl;
   }
 
   return 0;
