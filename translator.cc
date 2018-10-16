@@ -145,7 +145,9 @@ cmapclass::~cmapclass()
 
 string& cmapclass::getRGB(int index)
 {
-	if(index <= cmap.numColors) {
+	static	string	defaultColor( "-1 -1 -1" );
+
+	if(index >= 0 && index < cmap.rgbvec.size()) {
 		//cout << "INDEX: " << index << " NC: " << cmap.numColors << endl;
 		//cout << "STRING: " << cmap.rgbvec[index] << endl;
 		return cmap.rgbvec[index];
@@ -153,7 +155,7 @@ string& cmapclass::getRGB(int index)
 
 	else {
 		//cout << " Invalid index " << index << " NC " << cmap.numColors << endl;
-		return cmap.rgbvec[cmap.numColors]; // -1 -1 -1
+		return defaultColor;
 	}
 
 }
