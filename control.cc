@@ -490,7 +490,7 @@ int shellclass::parse(ifstream &inf, ostream &outf, ostream &outd)
     outf << "commandLabel {" << endl;
     for (int i=0; i<shell_ctr; i++)
         if(shelllist[i].label.length() > 0)
-            outf << "  " << i << " " << shelllist[i].label << endl;
+            outf << "  " << i << " \"" << shelllist[i].label << "\"" << endl;
     outf << "}" << endl;
 
     outf << "command {" << endl;
@@ -870,14 +870,14 @@ int relatedclass::parse(ifstream &inf, ostream &outf, ostream &outd)
 
 	outf << "displayFileName {" << endl;
 	for (int i=0; i<rel_ctr; i++) {
-		outf << "  " << i << " " << rellist[i].name << endl;  
+		outf << "  " << i << " \"" << rellist[i].name << "\"" << endl;  
 		//outd << "Rel Disp: " << rellist[i].name << endl;  
 	}
 	outf << "}" << endl;				
 
 	outf << "menuLabel {" << endl;
 	for (int i=0; i<rel_ctr; i++) 
-		outf << "  " << i << " " << rellist[i].label << endl;  
+		outf << "  " << i << " \"" << rellist[i].label << "\"" << endl;  
 	outf << "}" << endl;				
 
 	// Write 'symbol open curly brace' only if there are args
