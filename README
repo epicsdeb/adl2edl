@@ -1,3 +1,10 @@
+Version 1.7 June 18, 2019
+	Xiaoqiang Wang - quote strings that could contain whitespaces
+	Fix lame error checks for cmap.rgbvec
+	Send error msgs from fonts.cc to stderr.
+	Send fontInfoClass error to stderr instead of stdout
+	Adding a sample fonts.adl2edl file
+
 Version 1.6 June 27, 2018
 	Applying patch from M. Rivers to fix temp filename for parallel make.
 
