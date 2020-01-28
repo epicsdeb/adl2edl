@@ -400,11 +400,10 @@ shellclass::~shellclass()
 // process the "shell command" object
 int shellclass::parse(ifstream &inf, ostream &outf, ostream &outd)
 {
-	int mode = 0;
 	int shell_ctr = 0;
 
 	vector <shellnode> shelllist;
-	shellnode *sh;
+	shellnode *sh = NULL;
 
 	colormode = 0;
 	//outd << "In Shell " << translator::line_ctr << endl;
@@ -427,28 +426,27 @@ int shellclass::parse(ifstream &inf, ostream &outf, ostream &outd)
 			else if(!strcmp(s1,"clr"))  clr = atoi(s2); 
 			else if(!strcmp(s1,"bclr"))  bclr = atoi(s2); 
 
-			else if(strstr(s1, "label")!= 0x0) {
+			else if(sh && strstr(s1, "label")!= 0x0) {
 				sh->label = string(line, eq_pos+1, std::string::npos);
 			}
-			else if(strstr(s1, "name")!= 0x0) {
+			else if(sh && strstr(s1, "name")!= 0x0) {
 				sh->name = string(line, eq_pos+1, std::string::npos);
 			}
-			else if( (strstr(s1, "args")!= 0x0)) {
+			else if(sh && (strstr(s1, "args")!= 0x0)) {
 				sh->args = string(line, eq_pos+1, std::string::npos);
 			}
 		} else { 
 			if( (strstr(line.c_str(), "command")!= 0x0)) {
 				sh = new shellnode();
-				mode = 1;
 			}
-			else if(( mode == 1) && (strstr(line.c_str(), "}")!= 0x0)) {
-				mode = 0;
+			else if(sh && (strstr(line.c_str(), "}")!= 0x0)) {
 				// Copy data to vector
 				if(sh->name.length() > 2) { // empty item will be ""
 					shelllist.push_back(*sh);
 					shell_ctr++;
 				}
 				delete sh;
+				sh = NULL;
 			}
 		}
     } while (open > 0);
@@ -489,8 +487,10 @@ int shellclass::parse(ifstream &inf, ostream &outf, ostream &outd)
 
     outf << "commandLabel {" << endl;
     for (int i=0; i<shell_ctr; i++)
-        if(shelllist[i].label.length() > 0)
+        if(shelllist[i].label.length() > 0){
+			stripQs(shelllist[i].label);
             outf << "  " << i << " \"" << shelllist[i].label << "\"" << endl;
+		}
     outf << "}" << endl;
 
     outf << "command {" << endl;
@@ -617,7 +617,6 @@ int relatedclass::parse(ifstream &inf, ostream &outf, ostream &outd)
 	squote =  "\"";
 	string nil = "";
 	int slash_pos;
-	int mode = 0;
 	int rel_ctr = 0;
 	int tpos;
 	int ret;
@@ -628,7 +627,7 @@ int relatedclass::parse(ifstream &inf, ostream &outf, ostream &outd)
 	struct stat buf;
 
 	vector <relnode> rellist;
-	relnode *rel;
+	relnode *rel	= NULL;
 
 	//outd << "In Related " << translator::line_ctr << endl;
 	//outd << "retitle:" << retitle << endl;
@@ -660,14 +659,14 @@ int relatedclass::parse(ifstream &inf, ostream &outf, ostream &outd)
 				tstring = string(line, eq_pos+1, std::string::npos);
 				while((tpos = tstring.find(squote,0)) != -1)
                     tstring.replace(tpos,1,nil);
-				if(mode) rel->label = tstring;
+				if(rel) rel->label = tstring;
 				else title = tstring;
 			} 
 			else if(strstr(s1, "policy")!= 0x0) {
 				tstring = string(line, eq_pos+1, std::string::npos);
 				while((tpos = tstring.find(squote,0)) != -1)
                     tstring.replace(tpos,1,nil);
-				if(mode) rel->policy = tstring;
+				if(rel) rel->policy = tstring;
 			}
 
 			else if(strstr(s1, "name")!= 0x0) {
@@ -677,7 +676,7 @@ int relatedclass::parse(ifstream &inf, ostream &outf, ostream &outd)
 				// outd << "START " << tname << endl;
 				saved_name = tname;
 
-				if(tname.length() != 0) { // medm ignores blank names. edm does not.
+				if(rel && tname.length() != 0) { // medm ignores blank names. edm does not.
 					adl_pos = tname.find(adl,0);
 					if(adl_pos != -1){
 						tname.replace(adl_pos,4,echar);
@@ -709,12 +708,12 @@ int relatedclass::parse(ifstream &inf, ostream &outf, ostream &outd)
 						}
                     }
 					adl_pos = temp.find(adl,0);
-					if(adl_pos != -1){
+					if(rel && adl_pos != -1){
 						temp.replace(adl_pos,4,echar);
 						rel->name = temp;
 					}
 
-					if(temp.length() == 0) {
+					if(rel && temp.length() == 0) {
 						if(translator::dir == "/tmp") {
 							temp =  saved_name;
 							outd << "Web file " << saved_name << endl;
@@ -739,13 +738,14 @@ int relatedclass::parse(ifstream &inf, ostream &outf, ostream &outd)
 						} 
 					} // end if temp length = 0
 
-					rel->name = temp;
+					if ( rel )
+						rel->name = temp;
 
 				} // end if jlab
 
 				else if (retitle) {			// Not jlab
 					adl_pos = tname.find(adl,0);
-					if(adl_pos != -1){
+					if(rel && adl_pos != -1){
 						tname.replace(adl_pos,4,echar);
 						rel->name = tname;
 					}
@@ -756,7 +756,7 @@ int relatedclass::parse(ifstream &inf, ostream &outf, ostream &outd)
 			} // end if name
 
 
-			else if( (strstr(s1, "args")!= 0x0)) {
+			else if(rel && (strstr(s1, "args")!= 0x0)) {
 				rel->args = string(line, eq_pos, std::string::npos);
 				// outd << "RelatedDisplay args " << rel->args << endl;
 				// get rid of leading spaces . See below.
@@ -769,10 +769,8 @@ int relatedclass::parse(ifstream &inf, ostream &outf, ostream &outd)
 			// Create a new node
 			if( (strstr(line.c_str(), "display")!= 0x0)) {
 				rel = new relnode();
-				mode = 1;
 				// outd << "RelatedDisplay new node" << endl;
-			} else if(( mode == 1) && (strstr(line.c_str(), bclose.c_str())!= 0x0)) {
-				mode = 0;
+			} else if(rel && (strstr(line.c_str(), bclose.c_str())!= 0x0)) {
 				// Some programatically created screens leave rel.name and the rest
 				// of the fields as "". This is ok for medm. Not for edm.
 				// So, if the name is "" or blank after stripping quotes, 
@@ -783,6 +781,7 @@ int relatedclass::parse(ifstream &inf, ostream &outf, ostream &outd)
 					rel_ctr++;
 				}
 				delete rel;
+				rel = NULL;
 			}
 		}
     } while (open > 0);
