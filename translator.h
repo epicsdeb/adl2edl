@@ -142,7 +142,7 @@ public:
     std::string nil;
 	std::string squote;
     int snum;
-    char s1[80], s2[80];
+    char s1[256], s2[256];
 };
 
 class comclass

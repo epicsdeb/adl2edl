@@ -165,7 +165,6 @@ int cmapclass::parse(ifstream &inf, ostream &outf, ostream &outd)
 	int eq_pos;
 	string eq("=");
 	string space(" ");
-	char s1[16];
 	char t[4];
 	int ctr = 0;
 
@@ -345,7 +344,7 @@ int translator::processFile (char *in, char *out)
 	string bclose("}");
 	int open = 0;
 	int snum;
-	char s1[20], s2[20];
+	char s1[256], s2[256];
 	int tpos;
 	string chan;
 	string squote;
@@ -573,7 +572,7 @@ int translator::read_battr(ifstream &inf, ostream &outd)
     string space(" ");
     string eq("=");
     int snum;
-	char s1[80], s2[80];
+	char s1[256], s2[256];
 
 	//outd << "In read_battr " << translator::line_ctr << endl;
 
@@ -619,7 +618,7 @@ int translator::read_dattr(ifstream &inf, ostream &outd)
     string space(" ");
     string eq("=");
     int snum;
-	char s1[80], s2[80];
+	char s1[256], s2[256];
 	int x,y,wid,hgt;
 
 	//outd << "In read_dattr " << translator::line_ctr << endl;
@@ -709,7 +708,7 @@ int translator::parseComposite(ifstream &inf, ostream &outf, ostream &outd, ostr
 	string squote = "\"";
 	string nil("");
     int snum;
-	char s1[80], s2[80];
+	char s1[256], s2[256];
 	int x,y,wid,hgt;
 	string file;
 	int adl_pos;
@@ -1023,7 +1022,7 @@ int translator::parseCompositeClose(ifstream &inf, ostream &outf, ostream &outd,
     string bopen("{");
 	string line;
 	bool dyn = false;
-	char s1[80], s2[80];
+	char s1[256], s2[256];
 	int close_ct = 0;
 	int colormode = 0;
 	int vis = 0;
