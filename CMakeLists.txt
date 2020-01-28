@@ -9,6 +9,7 @@ set(CMAKE_BUILD_TYPE DEBUG)
 
 ## Brave enough?
 #add_definitions(-Wall)
+add_definitions(-fstack-protector-all)
 
 include_directories(
  ${X11_INCLUDE_DIR}
