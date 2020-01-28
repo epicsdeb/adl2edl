@@ -1,3 +1,8 @@
+Version 1.8 Jan 27, 2020
+	Add guards agains parsing shellCmd args w/o a shellNode.
+	Bump up all s1 and s2 buffers to 256 bytes.
+	Add -fstack-protector-all compile flag.
+
 Version 1.7 June 18, 2019
 	Xiaoqiang Wang - quote strings that could contain whitespaces
 	Fix lame error checks for cmap.rgbvec
